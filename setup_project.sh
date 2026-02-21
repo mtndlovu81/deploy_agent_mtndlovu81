@@ -7,9 +7,11 @@
 # 4. Prompts the user to update the attendance threshold in the config.json file.
 # 5. Provides feedback on the setup process and any updates made to the configuration.
 # 6. Implements a Signal Trap to handle interruptions gracefully.
-# If the user interrupts the script (e.g., by pressing Ctrl+C), it will execute the cleanup function to remove any partially created workspace and exit cleanly.
-# Before exiting, it must bundle the current state of the project directory into an archive named "attendance_tracker_{input}_archive
-# where {input} is the name of the attendance tracker provided by the user.
+# 7. If the user interrupts the script (e.g., by pressing Ctrl+C), it will execute the cleanup function to remove any partially created workspace and exit cleanly.
+# 8. Before exiting, it must bundle the current state of the project directory into an archive named "attendance_tracker_{input}_archive
+# 9. where {input} is the name of the attendance tracker provided by the user.
+# 10. Before completing the setup, it checks if python3 is installed on the system. If not, it prompts the user to install Python 3 and exits the script.
+# 11. Ensure the directory structure is created correctly and all files are copied to the appropriate locations. If any step fails, it should provide an error message and exit with a non-zero status code.
 
 cleanup() {
     echo "Cleaning up the workspace..."
@@ -56,6 +58,14 @@ cp "$PWD/source_files/assets.csv" "$WORKSPACE_DIR/Helpers"
 cp "$PWD/source_files/config.json" "$WORKSPACE_DIR/Helpers"
 cp "$PWD/source_files/reports.log" "$WORKSPACE_DIR/reports"
 echo "Project setup completed successfully. Workspace created at: $WORKSPACE_DIR"
+
+# check if python3 is installed using python3 --version command. If not, give the user a warning and exit the script.
+if python3 --version > /dev/null 2>&1; then
+    echo "Python 3 is installed."
+else
+    echo "Error: Python 3 is not installed. Please install Python 3 to use this attendance tracker." >&2
+    exit 1S
+fi
 
 # prompt the user to decide whether to update the attendance threshold
 read -p "Do you want to update the attendance threshold? (y/n): " UPDATE_THRESHOLD
