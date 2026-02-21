@@ -67,6 +67,14 @@ else
     exit 1S
 fi
 
+# ensure the directory structure is created correctly and all files are copied to the appropriate locations.
+if [[ -d "$WORKSPACE_DIR" && -d "$WORKSPACE_DIR/Helpers" && -d "$WORKSPACE_DIR/reports" ]]; then
+    echo "Directory structure created successfully."
+else
+    echo "Error: Directory structure was not created correctly." >&2
+    exit 1
+fi
+
 # prompt the user to decide whether to update the attendance threshold
 read -p "Do you want to update the attendance threshold? (y/n): " UPDATE_THRESHOLD
 if [[ "$UPDATE_THRESHOLD" == "y" ]]; then
